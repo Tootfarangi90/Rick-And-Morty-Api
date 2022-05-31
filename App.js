@@ -10,6 +10,7 @@ import {
   ScrollView,
   Button,
 } from "react-native";
+
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import PressableButton from "./Components/PressableButton";
 
@@ -190,8 +191,8 @@ const styles = StyleSheet.create({
     height: 55,
     alignItems: "center",
     justifyContent: "center",
-    borderBottomColor: "pink",
-    borderBottomWidth: 1,
+    borderBottomColor: "black",
+    borderBottomWidth: 2,
   },
   listHeadline: {
     fontSize: 24,

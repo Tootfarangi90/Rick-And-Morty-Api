@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     header: {
       alignSelf: "center",
       width: "100%",
-      backgroundColor: 'black'
+      backgroundColor: 'white'
     },
   });
 
