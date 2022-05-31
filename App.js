@@ -197,17 +197,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
-  items: {
-    marginTop: 30,
-
-    justifyContent: "space-between",
-    flexDirection: "column",
-  },
-  item: {
-    margin: 30,
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
   input: {
     paddingVertical: 10,
     paddingHorizontal: 15,
