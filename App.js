@@ -38,23 +38,6 @@ export default function App() {
     );
   };
 
-  const markTodoComplete = (todoId) => {
-    const newTodos = todos.map((item) => {
-      if (item.id == todoId) {
-        return { ...item, completed: true };
-      }
-      return item;
-    });
-
-    const klart = newTodos.filter((item) => item.completed == true);
-    const newTodos1 = todos.filter((item) => item.id != todoId);
-    setTodos(newTodos1);
-
-    setDoneTodo(klart);
-
-    console.log(doneTodo);
-  };
-
   const getCharacters = async (name) => {
     setNewName(name);
     try {
