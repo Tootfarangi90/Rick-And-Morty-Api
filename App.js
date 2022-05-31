@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from "react";
 import {
-  KeyboardAvoidingView,
   StyleSheet,
   Text,
   View,
   TextInput,
-  Platform,
   TouchableOpacity,
   StatusBar,
   SafeAreaView,
   Pressable,
   ScrollView,
+  ImageBackground,
+  Switch,
+  Animated,
+  
 } from "react-native";
+import PressableButton from "./Components/PressableButton";
 
 import Character from "./Components/Character";
 
@@ -19,12 +22,12 @@ const background = {
   uri: "https://images.alphacoders.com/876/thumb-1920-876589.jpg",
 };
 
-
 export default function App() {
   const [newName, setNewName] = useState("");
   const [data, setData] = useState([]);
   const [likedCharacters, setLikedCharacters] = useState([]);
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
+  const [isVisible, setIsVisible] = useState(true)
 
   const LikeCharacter = (index, item) => {
     setLikedCharacters([...likedCharacters, item]);
@@ -37,6 +40,12 @@ export default function App() {
       likedCharacters.filter((element) => element.id !== item.id)
     );
   };
+
+  const DeleteButton = (index, item) => {
+    setFavoriteCharacters((favoriteCharacters) => 
+      favoriteCharacters.filter((element) => element.id !== item.id)
+    )
+  }
 
   const getCharacters = async (name) => {
     setNewName(name);
@@ -53,10 +62,28 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <ImageBackground
+          source={require("./assets/header.png")}
+          resizeMode="contain"
+          style={styles.image}
+        ></ImageBackground>
+        <TextInput
+          style={styles.input}
+          placeholder="Search for a character..."
+          placeholderTextColor="hsl(234, 11%, 52%)"
+          value={newName}
+          onChangeText={(name) => getCharacters(name)}
+        />
+      </View>
       <View style={styles.tasksWrapper}>
         <ScrollView>
-          <View>
-            <Text style={styles.listHeadline}> ALL Characters</Text>
+          
+          <View style={{ borderBottomColor: "black", borderBottomWidth: 1 }}>
+            <View style={styles.listHeader}>
+              <Text style={styles.listHeadline}>All Characters</Text>
+            </View>
+              <TouchableOpacity><Text>Hide</Text></TouchableOpacity>
             {data.map((item, index) => {
               return (
                 <>
@@ -71,62 +98,61 @@ export default function App() {
                       index={index}
                     />
                   </Pressable>
+                  <PressableButton title='Like' onPress={() => LikeCharacter(index, item)} />
                 </>
               );
             })}
           </View>
 
-          <View>
-            <Text style={styles.listHeadline}>Liked</Text>
+          <View style={{ borderBottomColor: "black", borderBottomWidth: 1 }}>
+            <View style={styles.listHeader}>
+              <Text style={styles.listHeadline}>Liked</Text>
+            </View>
             {likedCharacters.map((item, index) => {
               return (
+                <>
                 <TouchableOpacity
                   key={index}
                   onPress={() => FavoriteButton(index, item)}
-                >
+                  >
                   <Character
                     name={item.name}
                     id={item.id}
                     image={{ uri: item.image }}
                     index={index}
-                  />
+                    />
                 </TouchableOpacity>
+                <PressableButton title='Favorite' onPress={() => FavoriteButton(index, item)} />
+                    </>
               );
             })}
           </View>
 
-          <View>
-            <Text style={styles.listHeadline}>Favorite</Text>
+          <View style={{ borderBottomColor: "black", borderBottomWidth: 1 }}>
+            <View style={styles.listHeader}>
+              <Text style={styles.listHeadline}>Favorite</Text>
+            </View>
             {favoriteCharacters.map((item, index) => {
               return (
+                <>
                 <TouchableOpacity
                   key={index}
                   onPress={() => FavoriteButton(index, item)}
-                >
+                  >
                   <Character
                     name={item.name}
                     id={item.id}
                     image={{ uri: item.image }}
                     index={index}
-                  />
+                    />
                 </TouchableOpacity>
+                <PressableButton title='Delete' onPress={() => DeleteButton(index, item)} />
+                </>
               );
             })}
           </View>
         </ScrollView>
       </View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "android" ? "padding" : "height"}
-        style={styles.writeTaskWrapper}
-      >
-        <TextInput
-          style={styles.input}
-          placeholder="Search for a character..."
-          placeholderTextColor="hsl(234, 11%, 52%)"
-          value={newName}
-          onChangeText={(name) => getCharacters(name)}
-        />
-      </KeyboardAvoidingView>
       <StatusBar style="auto" />
     </SafeAreaView>
   );
@@ -148,6 +174,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
+  },
+  image: {
+    height: 160,
+    paddingHorizontal: 25,
+  },
+  background: {
+    flex: 1,
+    flexDirection: "column",
+    paddingTop: 20,
+  },
+  header: {
+    alignSelf: "center",
+    width: "100%",
   },
 
   listHeader: {
