@@ -26,14 +26,14 @@ const styles = StyleSheet.create({
     avatarContainer: {
         backgroundColor: '#d9d9d9',
         borderRadius: 100,
-        height: 50,
-        width: 50,
+        height: 100,
+        width: 100,
         justifyContent: 'center',
         alignItems: 'center'
     },
     avatar: {
-        width: 50,
-        height: 50,
+        width: 100,
+        height: 100,
         borderRadius: 100,
     },
     name: {

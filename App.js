@@ -6,16 +6,15 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
-  SafeAreaView,
   Pressable,
   ScrollView,
-  ImageBackground,
-  Switch,
-  Animated,
-  
+  Button,
 } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import PressableButton from "./Components/PressableButton";
 
+//Components
+import Header from "./Components/Header";
 import Character from "./Components/Character";
 
 const background = {
@@ -27,7 +26,7 @@ export default function App() {
   const [data, setData] = useState([]);
   const [likedCharacters, setLikedCharacters] = useState([]);
   const [favoriteCharacters, setFavoriteCharacters] = useState([]);
-  const [isVisible, setIsVisible] = useState(true)
+  const [isVisible, setIsVisible] = useState(true);
 
   const LikeCharacter = (index, item) => {
     setLikedCharacters([...likedCharacters, item]);
@@ -42,10 +41,10 @@ export default function App() {
   };
 
   const DeleteButton = (index, item) => {
-    setFavoriteCharacters((favoriteCharacters) => 
+    setFavoriteCharacters((favoriteCharacters) =>
       favoriteCharacters.filter((element) => element.id !== item.id)
-    )
-  }
+    );
+  };
 
   const getCharacters = async (name) => {
     setNewName(name);
@@ -61,13 +60,10 @@ export default function App() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <ImageBackground
-          source={require("./assets/header.png")}
-          resizeMode="contain"
-          style={styles.image}
-        ></ImageBackground>
+    <SafeAreaProvider style={styles.container}>
+      <StatusBar style="auto" />
+      <Header />
+      <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
         <TextInput
           style={styles.input}
           placeholder="Search for a character..."
@@ -76,14 +72,21 @@ export default function App() {
           onChangeText={(name) => getCharacters(name)}
         />
       </View>
-      <View style={styles.tasksWrapper}>
-        <ScrollView>
-          
+      <Button
+        title="Clear"
+        onPress={() => {
+          setNewName(""), setData([]);
+        }}
+      />
+      <ScrollView>
+        <View style={styles.tasksWrapper}>
           <View style={{ borderBottomColor: "black", borderBottomWidth: 1 }}>
             <View style={styles.listHeader}>
               <Text style={styles.listHeadline}>All Characters</Text>
             </View>
-              <TouchableOpacity><Text>Hide</Text></TouchableOpacity>
+            <TouchableOpacity>
+              <Text>Hide</Text>
+            </TouchableOpacity>
             {data.map((item, index) => {
               return (
                 <>
@@ -98,7 +101,10 @@ export default function App() {
                       index={index}
                     />
                   </Pressable>
-                  <PressableButton title='Like' onPress={() => LikeCharacter(index, item)} />
+                  <PressableButton
+                    title="Like"
+                    onPress={() => LikeCharacter(index, item)}
+                  />
                 </>
               );
             })}
@@ -111,19 +117,22 @@ export default function App() {
             {likedCharacters.map((item, index) => {
               return (
                 <>
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => FavoriteButton(index, item)}
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => FavoriteButton(index, item)}
                   >
-                  <Character
-                    name={item.name}
-                    id={item.id}
-                    image={{ uri: item.image }}
-                    index={index}
+                    <Character
+                      name={item.name}
+                      id={item.id}
+                      image={{ uri: item.image }}
+                      index={index}
                     />
-                </TouchableOpacity>
-                <PressableButton title='Favorite' onPress={() => FavoriteButton(index, item)} />
-                    </>
+                  </TouchableOpacity>
+                  <PressableButton
+                    title="Favorite"
+                    onPress={() => FavoriteButton(index, item)}
+                  />
+                </>
               );
             })}
           </View>
@@ -135,26 +144,28 @@ export default function App() {
             {favoriteCharacters.map((item, index) => {
               return (
                 <>
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => FavoriteButton(index, item)}
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => FavoriteButton(index, item)}
                   >
-                  <Character
-                    name={item.name}
-                    id={item.id}
-                    image={{ uri: item.image }}
-                    index={index}
+                    <Character
+                      name={item.name}
+                      id={item.id}
+                      image={{ uri: item.image }}
+                      index={index}
                     />
-                </TouchableOpacity>
-                <PressableButton title='Delete' onPress={() => DeleteButton(index, item)} />
+                  </TouchableOpacity>
+                  <PressableButton
+                    title="Delete"
+                    onPress={() => DeleteButton(index, item)}
+                  />
                 </>
               );
             })}
           </View>
-        </ScrollView>
-      </View>
-      <StatusBar style="auto" />
-    </SafeAreaView>
+        </View>
+      </ScrollView>
+    </SafeAreaProvider>
   );
 }
 
@@ -175,24 +186,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     alignItems: "center",
   },
-  image: {
-    height: 160,
-    paddingHorizontal: 25,
-  },
-  background: {
-    flex: 1,
-    flexDirection: "column",
-    paddingTop: 20,
-  },
-  header: {
-    alignSelf: "center",
-    width: "100%",
-  },
-
   listHeader: {
     height: 55,
     alignItems: "center",
     justifyContent: "center",
+    borderBottomColor: "pink",
+    borderBottomWidth: 1,
   },
   listHeadline: {
     fontSize: 24,
@@ -210,10 +209,10 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   input: {
-    paddingVertical: 15,
+    paddingVertical: 10,
     paddingHorizontal: 15,
     backgroundColor: "#FFF",
-    borderRadius: 60,
+    borderRadius: 100,
     borderWidth: 3,
     borderColor: "#C0C0C0",
     width: 400,
