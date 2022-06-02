@@ -68,7 +68,6 @@ export default function App() {
         <TextInput
           style={styles.input}
           placeholder="Search for a character..."
-          placeholderTextColor="hsl(234, 11%, 52%)"
           value={newName}
           onChangeText={(name) => getCharacters(name)}
         />
@@ -85,9 +84,7 @@ export default function App() {
             <View style={styles.listHeader}>
               <Text style={styles.listHeadline}>All Characters</Text>
             </View>
-            <TouchableOpacity>
-              <Text>Hide</Text>
-            </TouchableOpacity>
+
             {data.map((item, index) => {
               return (
                 <>
@@ -208,5 +205,6 @@ const styles = StyleSheet.create({
     width: 400,
     fontSize: 19,
     fontWeight: "bold",
+    placeholderTextColor: 'black'
   },
 });
